@@ -15,10 +15,10 @@ const SOCKET_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api')
 
 const adminNavItems = [
   { path: '/admin',           icon: LayoutDashboard, label: 'Dashboard',  exact: true,  color: '#f97316' },
-  { path: '/admin/commandes', icon: ClipboardList,   label: 'Commandes',  exact: false, color: '#3b82f6' },
-  { path: '/admin/plats',     icon: Utensils,        label: 'Plats',      exact: false, color: '#10b981' },
+  { path: '/admin/commandes', icon: ClipboardList,   label: 'Commandes',  exact: false, color: '#f97316' },
+  { path: '/admin/plats',     icon: Utensils,        label: 'Plats',      exact: false, color: '#f97316' },
   { path: '/admin/chat',      icon: MessageCircle,   label: 'Chat',       exact: false, color: '#f97316' },
-  { path: '/admin/settings',  icon: Settings,        label: 'Paramètres', exact: false, color: '#8b5cf6' },
+  { path: '/admin/settings',  icon: Settings,        label: 'Paramètres', exact: false, color: '#f97316' },
 ];
 
 export default function AdminLayout({ children }) {
