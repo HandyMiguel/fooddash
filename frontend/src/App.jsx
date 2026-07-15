@@ -14,7 +14,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminCommandes from './pages/AdminCommandes';
 import AdminPlats from './pages/AdminPlats';
 import AdminSettings from './pages/AdminSettings';
-import ProfilAdmin from './pages/ProfilAdmin';
+import ProfilAdmin from './pages/Profiladmin';
 import AdminChat from './pages/AdminChat';
 import LiveChat from './components/LiveChat';
 import { AnimatePresence } from 'framer-motion';
