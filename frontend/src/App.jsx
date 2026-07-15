@@ -18,7 +18,7 @@ import ProfilAdmin from './pages/ProfilAdmin';
 import AdminChat from './pages/AdminChat';
 import LiveChat from './components/LiveChat';
 import { AnimatePresence } from 'framer-motion';
-import Favoris from './pages/Favoris';
+import Favoris from './pages/favoris';
 import Profil from './pages/Profil';
 import LivreurLayout from './layouts/LivreurLayout';
 import LivreurDashboard from './pages/LivreurDashboard';
