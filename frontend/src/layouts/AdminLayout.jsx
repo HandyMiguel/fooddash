@@ -49,6 +49,7 @@ export default function AdminLayout({ children }) {
   const notifItemBg = dark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)';
   const notifItemBorder = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
   const logoGradient = 'linear-gradient(135deg, #f97316, #ef4444)';
+  const bottomTabBg = dark ? 'rgba(13,13,18,0.98)' : 'rgba(255,255,255,0.98)';
 
   // Socket pour les messages non lus du chat
   useEffect(() => {
@@ -140,8 +141,8 @@ export default function AdminLayout({ children }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', background: bg, fontFamily: "'Syne', 'Inter', sans-serif", transition: 'background 0.3s' }}>
 
-      {/* Sidebar */}
-      <aside style={{
+      {/* Sidebar - visible desktop uniquement (cachée en CSS sous 768px) */}
+      <aside className="admin-sidebar" style={{
         width: collapsed ? 72 : 260,
         transition: 'width 0.3s cubic-bezier(0.4,0,0.2,1)',
         background: sidebarBg,
@@ -324,21 +325,35 @@ export default function AdminLayout({ children }) {
         </div>
       </aside>
 
-      <main style={{
+      <main className="admin-main" style={{
         flex: 1,
         marginLeft: collapsed ? 72 : 260,
         transition: 'margin-left 0.3s cubic-bezier(0.4,0,0.2,1)',
         minHeight: '100vh', background: bg,
       }}>
-        <div style={{
+        <div className="admin-topbar" style={{
           height: 64, borderBottom: topbarBorder,
           display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
           padding: '0 28px', background: topbarBg,
           backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 30,
           gap: 12,
         }}>
+          {/* Logo mobile - visible seulement quand la sidebar est cachée */}
+          <div className="admin-mobile-logo" style={{ display: 'none', alignItems: 'center', gap: 8, marginRight: 'auto' }}>
+            <div style={{
+              width: 30, height: 30, background: logoGradient,
+              borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 15, flexShrink: 0,
+            }}>🍔</div>
+            <span style={{
+              fontSize: 15, fontWeight: 800, background: logoGradient,
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              letterSpacing: '-0.5px', whiteSpace: 'nowrap',
+            }}>FoodDash</span>
+          </div>
+
           {/* Bouton Chat avec compteur */}
-          <Link to="/admin/chat" title="Chat clients" style={{ position: 'relative', width: 38, height: 38, borderRadius: 10, border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, background: location.pathname === '/admin/chat' ? 'rgba(249,115,22,0.1)' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', textDecoration: 'none' }}>
+          <Link to="/admin/chat" title="Chat clients" style={{ position: 'relative', width: 38, height: 38, borderRadius: 10, border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`, background: location.pathname === '/admin/chat' ? 'rgba(249,115,22,0.1)' : 'transparent', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s', textDecoration: 'none', flexShrink: 0 }}>
             <MessageCircle size={17} style={{ color: location.pathname === '/admin/chat' ? '#f97316' : textMuted }} />
             {chatUnread > 0 && (
               <span style={{ position: 'absolute', top: -4, right: -4, background: '#ef4444', color: '#fff', fontSize: 10, fontWeight: 800, minWidth: 18, height: 18, borderRadius: 9, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(239,68,68,0.4)' }}>
@@ -347,7 +362,7 @@ export default function AdminLayout({ children }) {
             )}
           </Link>
 
-          <div ref={notifRef} style={{ position: 'relative' }}>
+          <div ref={notifRef} style={{ position: 'relative', flexShrink: 0 }}>
             <button
               onClick={() => setShowNotif(!showNotif)}
               style={{
@@ -388,7 +403,7 @@ export default function AdminLayout({ children }) {
             </button>
 
             {showNotif && (
-              <div style={{
+              <div className="admin-notif-dropdown" style={{
                 position: 'absolute',
                 right: 0,
                 top: 'calc(100% + 8px)',
@@ -471,7 +486,7 @@ export default function AdminLayout({ children }) {
               border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
               background: 'transparent', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'all 0.2s', textDecoration: 'none',
+              transition: 'all 0.2s', textDecoration: 'none', flexShrink: 0,
             }}
             onMouseEnter={e => { e.currentTarget.style.background = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
@@ -486,7 +501,7 @@ export default function AdminLayout({ children }) {
               border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
               background: 'transparent', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'all 0.2s',
+              transition: 'all 0.2s', flexShrink: 0,
             }}
             onMouseEnter={e => e.currentTarget.style.background = dark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)'}
             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
@@ -494,18 +509,113 @@ export default function AdminLayout({ children }) {
             {dark ? <Sun size={17} style={{ color: '#fbbf24' }} /> : <Moon size={17} style={{ color: textMuted }} />}
           </button>
 
-          <div style={{
+          <div className="admin-status-badge" style={{
             display: 'flex', alignItems: 'center', gap: 6,
             background: 'rgba(16,185,129,0.1)',
             border: '1px solid rgba(16,185,129,0.2)',
             borderRadius: 8, padding: '5px 12px',
+            flexShrink: 0,
           }}>
             <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-            <span style={{ fontSize: 12, color: '#10b981', fontWeight: 600 }}>Système actif</span>
+            <span className="admin-status-text" style={{ fontSize: 12, color: '#10b981', fontWeight: 600 }}>Système actif</span>
           </div>
         </div>
-        <div style={{ padding: 32 }}>{children}</div>
+        <div className="admin-content" style={{ padding: 32 }}>{children}</div>
       </main>
+
+      {/* Bottom tab bar - mobile uniquement */}
+      <nav className="admin-bottom-tab" style={{
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50,
+        background: bottomTabBg, backdropFilter: 'blur(16px)',
+        borderTop: sidebarBorder,
+        boxShadow: dark ? '0 -4px 20px rgba(0,0,0,0.3)' : '0 -4px 20px rgba(0,0,0,0.06)',
+      }}>
+        <div style={{ display: 'grid', gridTemplateColumns: `repeat(${adminNavItems.length}, 1fr)` }}>
+          {adminNavItems.map(({ path, icon: Icon, label, exact, color }) => {
+            const active = isActive(path, exact);
+            const showChatBadge = path === '/admin/chat' && chatUnread > 0;
+            return (
+              <Link
+                key={path}
+                to={path}
+                style={{
+                  position: 'relative',
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  gap: 3, padding: '10px 4px', textDecoration: 'none',
+                }}
+              >
+                <div style={{
+                  position: 'relative',
+                  width: 34, height: 34, borderRadius: 10,
+                  background: active ? `${color}18` : 'transparent',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.2s',
+                }}>
+                  <Icon size={16} color={active ? color : textMuted} />
+                  {showChatBadge && (
+                    <span style={{
+                      position: 'absolute', top: -3, right: -3,
+                      background: '#ef4444', color: '#fff', fontSize: 9, fontWeight: 800,
+                      minWidth: 15, height: 15, borderRadius: 8,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}>{chatUnread}</span>
+                  )}
+                </div>
+                <span style={{
+                  fontSize: 10, fontWeight: active ? 700 : 500,
+                  color: active ? color : textMuted, whiteSpace: 'nowrap',
+                }}>{label}</span>
+                {active && (
+                  <span style={{
+                    position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+                    width: 24, height: 3, borderRadius: '0 0 4px 4px', background: color,
+                  }} />
+                )}
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+
+      <style>{`
+        .admin-bottom-tab { display: none; }
+
+        @media (max-width: 768px) {
+          .admin-sidebar {
+            display: none !important;
+          }
+          .admin-main {
+            margin-left: 0 !important;
+          }
+          .admin-mobile-logo {
+            display: flex !important;
+          }
+          .admin-status-text {
+            display: none;
+          }
+          .admin-status-badge {
+            padding: 5px 8px !important;
+          }
+          .admin-topbar {
+            padding: 0 14px !important;
+            gap: 8px !important;
+          }
+          .admin-content {
+            padding: 16px !important;
+            padding-bottom: 88px !important;
+          }
+          .admin-bottom-tab {
+            display: block !important;
+          }
+          .admin-notif-dropdown {
+            position: fixed !important;
+            right: 12px !important;
+            left: 12px !important;
+            width: auto !important;
+            top: 64px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

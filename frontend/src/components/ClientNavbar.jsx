@@ -1,5 +1,4 @@
 // components/ClientNavbar.jsx
-import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
@@ -7,9 +6,10 @@ import { useFavorites } from '../context/FavoritesContext';
 import { useCart } from '../context/CartContext';
 import NotificationBell from './NotificationBell';
 import Panier from './Panier';
+import { useState } from 'react';
 import {
-  Menu as MenuIcon, ShoppingBag, Heart, User,
-  LogOut, Moon, Sun, X, Utensils, ClipboardList,
+  ShoppingBag, Heart, User,
+  LogOut, Moon, Sun, Utensils, ClipboardList,
 } from 'lucide-react';
 
 const clientLinks = [
@@ -26,12 +26,12 @@ export default function ClientNavbar() {
   const { cartCount } = useCart();
   const location = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const isActive = (path) => location.pathname === path;
 
   return (
     <>
+      {/* TOP NAVBAR */}
       <nav className="fixed top-0 w-full z-50 glass shadow-sm transition-all duration-300">
         {/* Top gradient stripe */}
         <div className="h-[3px] bg-gradient-to-r from-transparent via-primary to-secondary" />
@@ -74,151 +74,87 @@ export default function ClientNavbar() {
             })}
           </div>
 
-          {/* Right actions */}
+          {/* Right actions - toujours visibles, même sur mobile */}
           <div className="flex items-center gap-3">
-            {/* Ces boutons restent visibles en desktop, cachés sur mobile (déplacés dans le hamburger) */}
-            <div className="hidden md:flex items-center gap-3">
-              <NotificationBell />
+            <NotificationBell />
 
-              {/* Cart */}
-              <button
-                onClick={() => setCartOpen(true)}
-                className="relative w-9 h-9 rounded-xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white flex items-center justify-center transition-all duration-300"
-              >
-                <ShoppingBag size={16} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-primary to-secondary text-white text-[9px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-950 shadow-md">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Theme toggle */}
-              <button
-                onClick={toggle}
-                className="w-9 h-9 rounded-xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 flex items-center justify-center transition-all duration-300"
-              >
-                {dark ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} />}
-              </button>
-
-              {/* Logout */}
-              <button
-                onClick={logout}
-                title="Déconnexion"
-                className="w-9 h-9 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-500 flex items-center justify-center transition-all duration-300"
-              >
-                <LogOut size={15} />
-              </button>
-            </div>
-
-            {/* Avatar - toujours visible */}
-            <Link
-              to="/profil"
-              className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-extrabold text-xs shadow-md shadow-primary/10 hover:scale-105 transition-transform duration-300"
-            >
-              {user?.nom?.[0]?.toUpperCase() || 'U'}
-            </Link>
-
-            {/* Mobile hamburger - garde un badge panier discret pour info rapide */}
+            {/* Cart */}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden relative w-9 h-9 rounded-xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 flex items-center justify-center transition-all duration-300"
+              onClick={() => setCartOpen(true)}
+              className="relative w-9 h-9 rounded-xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white flex items-center justify-center transition-all duration-300"
             >
-              {mobileOpen ? <X size={16} /> : <MenuIcon size={16} />}
-              {!mobileOpen && cartCount > 0 && (
+              <ShoppingBag size={16} />
+              {cartCount > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-primary to-secondary text-white text-[9px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-white dark:border-gray-950 shadow-md">
                   {cartCount}
                 </span>
               )}
             </button>
+
+            {/* Theme toggle */}
+            <button
+              onClick={toggle}
+              className="w-9 h-9 rounded-xl border border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 flex items-center justify-center transition-all duration-300"
+            >
+              {dark ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} />}
+            </button>
+
+            {/* Avatar */}
+            <Link
+              to="/profil"
+              className="hidden sm:flex w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-secondary items-center justify-center text-white font-extrabold text-xs shadow-md shadow-primary/10 hover:scale-105 transition-transform duration-300"
+            >
+              {user?.nom?.[0]?.toUpperCase() || 'U'}
+            </Link>
+
+            {/* Logout */}
+            <button
+              onClick={logout}
+              title="Déconnexion"
+              className="w-9 h-9 rounded-xl text-gray-400 hover:bg-red-500/10 hover:text-red-500 flex items-center justify-center transition-all duration-300"
+            >
+              <LogOut size={15} />
+            </button>
           </div>
         </div>
+      </nav>
 
-        {/* Mobile drawer */}
-        {mobileOpen && (
-          <div className="md:hidden border-t border-gray-100 dark:border-white/5 p-4 flex flex-col gap-1.5 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md">
-            {clientLinks.map(({ to, label, icon, hasBadge }) => {
-              const badge = hasBadge ? favorites.length : 0;
-              const active = isActive(to);
-              return (
-                <Link
-                  key={to}
-                  to={to}
-                  onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 p-3 rounded-xl transition-all duration-300 ${
-                    active
-                      ? 'bg-primary/10 text-primary font-bold'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${active ? 'bg-primary/20 text-primary' : 'bg-gray-100 dark:bg-white/5 text-gray-500'}`}>
-                    {icon}
-                  </div>
-                  <span className="text-sm font-medium">{label}</span>
+      {/* BOTTOM TAB BAR - mobile uniquement */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-t border-gray-100 dark:border-white/5 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]">
+        <div className="grid grid-cols-4">
+          {clientLinks.map(({ to, label, icon, hasBadge }) => {
+            const active = isActive(to);
+            const badge = hasBadge ? favorites.length : 0;
+            return (
+              <Link
+                key={to}
+                to={to}
+                className="relative flex flex-col items-center justify-center gap-1 py-2.5 transition-all duration-300"
+              >
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                  active
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-gray-400 dark:text-gray-500'
+                }`}>
+                  {icon}
                   {badge > 0 && (
-                    <span className="ml-auto bg-secondary text-white text-[10px] font-extrabold min-w-[20px] h-[20px] rounded-full flex items-center justify-center px-1.5">
+                    <span className="absolute top-1 right-[22%] bg-secondary text-white text-[9px] font-extrabold min-w-[16px] h-[16px] rounded-full flex items-center justify-center px-1">
                       {badge}
                     </span>
                   )}
-                </Link>
-              );
-            })}
-
-            {/* Séparateur */}
-            <div className="my-1.5 border-t border-gray-100 dark:border-white/5" />
-
-            {/* Notifications (mobile) */}
-            <div className="flex items-center gap-3 p-3 rounded-xl text-gray-700 dark:text-gray-300">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-white/5">
-                <NotificationBell />
-              </div>
-              <span className="text-sm font-medium">Notifications</span>
-            </div>
-
-            {/* Panier (mobile) */}
-            <button
-              onClick={() => { setCartOpen(true); setMobileOpen(false); }}
-              className="flex items-center gap-3 p-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 text-left w-full transition-all duration-300"
-            >
-              <div className="relative w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-white/5">
-                <ShoppingBag size={15} />
-                {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gradient-to-r from-primary to-secondary text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </div>
-              <span className="text-sm font-medium">Panier</span>
-              {cartCount > 0 && (
-                <span className="ml-auto bg-secondary text-white text-[10px] font-extrabold min-w-[20px] h-[20px] rounded-full flex items-center justify-center px-1.5">
-                  {cartCount}
+                </div>
+                <span className={`text-[10px] font-semibold tracking-wide transition-colors duration-300 ${
+                  active ? 'text-primary' : 'text-gray-400 dark:text-gray-500'
+                }`}>
+                  {label}
                 </span>
-              )}
-            </button>
-
-            {/* Theme toggle (mobile) */}
-            <button
-              onClick={toggle}
-              className="flex items-center gap-3 p-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 text-left w-full transition-all duration-300"
-            >
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gray-100 dark:bg-white/5">
-                {dark ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} className="text-indigo-400" />}
-              </div>
-              <span className="text-sm font-medium">{dark ? 'Mode clair' : 'Mode sombre'}</span>
-            </button>
-
-            {/* Déconnexion (mobile) */}
-            <button
-              onClick={() => { logout(); setMobileOpen(false); }}
-              className="flex items-center gap-3 p-3 rounded-xl text-red-500 hover:bg-red-500/10 text-left w-full transition-all duration-300"
-            >
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red-500/10">
-                <LogOut size={15} />
-              </div>
-              <span className="text-sm font-medium">Déconnexion</span>
-            </button>
-          </div>
-        )}
+                {active && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[3px] rounded-full bg-gradient-to-r from-primary to-secondary" />
+                )}
+              </Link>
+            );
+          })}
+        </div>
       </nav>
 
       {cartOpen && (
