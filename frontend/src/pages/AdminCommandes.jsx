@@ -102,11 +102,13 @@ export default function AdminCommandes() {
         </div>
         <button
           onClick={loadCommandes}
+          className="cmd-refresh-btn"
           style={{
-            display: 'flex', alignItems: 'center', gap: 7,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
             padding: '9px 16px', borderRadius: 10,
             background: cardBg, border: cardBorder,
             color: textMuted, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit',
+            flexShrink: 0,
           }}
         >
           <RefreshCw size={14} />Actualiser
@@ -132,12 +134,12 @@ export default function AdminCommandes() {
       </div>
 
       {/* Filters + Search */}
-      <div style={{
+      <div className="cmd-filters" style={{
         background: cardBg, border: cardBorder, borderRadius: 14, padding: '16px 20px',
         display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 18,
         boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)',
       }}>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, flex: 1 }}>
+        <div className="cmd-filter-btns" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, flex: 1 }}>
           {['toutes', ...STATUTS].map(s => {
             const active = filter === s;
             const cfg = STATUT_CFG[s];
@@ -153,6 +155,7 @@ export default function AdminCommandes() {
                   border: `1px solid ${active ? (cfg ? cfg.border : 'rgba(255,255,255,0.2)') : cardBorder}`,
                   color: active ? (cfg ? cfg.color : textColor) : textMuted,
                   display: 'flex', alignItems: 'center', gap: 5,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 {IconComponent && <IconComponent size={12} />}
@@ -161,7 +164,7 @@ export default function AdminCommandes() {
             );
           })}
         </div>
-        <div style={{ position: 'relative', minWidth: 220, flex: '1 1 220px' }}>
+        <div className="cmd-search-wrap" style={{ position: 'relative', minWidth: 220, flex: '1 1 220px' }}>
           <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: textMuted }} />
           <input
             type="text"
@@ -293,9 +296,32 @@ export default function AdminCommandes() {
             grid-template-columns: repeat(2, 1fr) !important;
           }
         }
+        @media (max-width: 640px) {
+          .cmd-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .cmd-refresh-btn {
+            width: 100%;
+          }
+          .cmd-filters {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .cmd-filter-btns {
+            width: 100%;
+          }
+          .cmd-search-wrap {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+        }
         @media (max-width: 480px) {
           .cmd-header h1 {
             font-size: 22px !important;
+          }
+          .cmd-stats {
+            gap: 8px !important;
           }
         }
       `}</style>
