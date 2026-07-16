@@ -90,25 +90,29 @@ export default function AdminCommandes() {
   };
 
   return (
-    <div style={{ fontFamily: "'Syne','Inter',sans-serif", color: textColor }}>
+    <div style={{ fontFamily: "'Syne','Inter',sans-serif", color: textColor, padding: '0 16px' }}>
 
       {/* Header */}
-      <div className="cmd-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, gap: 12, flexWrap: 'wrap' }}>
+      <div style={{ 
+        display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', 
+        marginBottom: 24, gap: 12, flexWrap: 'wrap' 
+      }}>
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0, letterSpacing: '-0.5px', color: textColor }}>Commandes</h1>
-          <p style={{ color: textMuted, fontSize: 13, margin: '4px 0 0' }}>
+          <h1 style={{ fontSize: 'clamp(22px, 4vw, 28px)', fontWeight: 800, margin: 0, letterSpacing: '-0.5px', color: textColor }}>
+            Commandes
+          </h1>
+          <p style={{ color: textMuted, fontSize: 'clamp(11px, 2vw, 13px)', margin: '4px 0 0' }}>
             {commandes.length} commandes enregistrées
           </p>
         </div>
         <button
           onClick={loadCommandes}
-          className="cmd-refresh-btn"
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
             padding: '9px 16px', borderRadius: 10,
             background: cardBg, border: cardBorder,
             color: textMuted, fontSize: 13, cursor: 'pointer', fontFamily: 'inherit',
-            flexShrink: 0,
+            flexShrink: 0, width: '100%', maxWidth: '200px'
           }}
         >
           <RefreshCw size={14} />Actualiser
@@ -116,30 +120,48 @@ export default function AdminCommandes() {
       </div>
 
       {/* Stats */}
-      <div className="cmd-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', 
+        gap: 12, 
+        marginBottom: 20 
+      }}>
         {[
           { label: 'Total',       val: stats.total,     color: dark ? '#fff' : '#1a1a2e',    bg: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)', icon: ClipboardList, iconColor: dark ? '#fff' : '#1a1a2e' },
           { label: 'En attente',  val: stats.enAttente, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  icon: Clock, iconColor: '#f59e0b' },
           { label: 'En cours',    val: stats.enCours,   color: '#f97316', bg: 'rgba(249,115,22,0.1)',  icon: ChefHat, iconColor: '#f97316' },
           { label: 'Livrées',     val: stats.livrees,   color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: CheckCircle, iconColor: '#10b981' },
         ].map(({ label, val, color, bg, icon: Icon, iconColor }) => (
-          <div key={label} style={{ background: bg, border: cardBorder, borderRadius: 14, padding: '16px 20px', textAlign: 'center', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)', minWidth: 0 }}>
+          <div key={label} style={{ 
+            background: bg, border: cardBorder, borderRadius: 14, 
+            padding: 'clamp(12px, 3vw, 16px) clamp(12px, 3vw, 20px)', 
+            textAlign: 'center', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)', minWidth: 0 
+          }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 6 }}>
               {Icon && <Icon size={14} color={iconColor} />}
-              <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>{label}</p>
+              <p style={{ fontSize: 'clamp(10px, 1.5vw, 11px)', color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>
+                {label}
+              </p>
             </div>
-            <p style={{ fontSize: 28, fontWeight: 800, color, margin: 0, letterSpacing: '-1px' }}>{val}</p>
+            <p style={{ fontSize: 'clamp(22px, 4vw, 28px)', fontWeight: 800, color, margin: 0, letterSpacing: '-1px' }}>
+              {val}
+            </p>
           </div>
         ))}
       </div>
 
       {/* Filters + Search */}
-      <div className="cmd-filters" style={{
-        background: cardBg, border: cardBorder, borderRadius: 14, padding: '16px 20px',
-        display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 18,
+      <div style={{
+        background: cardBg, border: cardBorder, borderRadius: 14, 
+        padding: 'clamp(12px, 3vw, 16px) clamp(12px, 3vw, 20px)',
+        display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', 
+        marginBottom: 18,
         boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)',
       }}>
-        <div className="cmd-filter-btns" style={{ display: 'flex', flexWrap: 'wrap', gap: 6, flex: 1 }}>
+        <div style={{ 
+          display: 'flex', flexWrap: 'wrap', gap: 6, flex: '1 1 auto',
+          justifyContent: 'flex-start'
+        }}>
           {['toutes', ...STATUTS].map(s => {
             const active = filter === s;
             const cfg = STATUT_CFG[s];
@@ -149,23 +171,31 @@ export default function AdminCommandes() {
                 key={s}
                 onClick={() => setFilter(s)}
                 style={{
-                  padding: '6px 13px', borderRadius: 8, fontSize: 12, fontWeight: 600,
+                  padding: 'clamp(5px, 1.5vw, 6px) clamp(10px, 2vw, 13px)',
+                  borderRadius: 8, 
+                  fontSize: 'clamp(10px, 1.8vw, 12px)', 
+                  fontWeight: 600,
                   cursor: 'pointer', fontFamily: 'inherit', transition: 'all 0.15s',
                   background: active ? (cfg ? cfg.bg : 'rgba(255,255,255,0.12)') : 'transparent',
                   border: `1px solid ${active ? (cfg ? cfg.border : 'rgba(255,255,255,0.2)') : cardBorder}`,
                   color: active ? (cfg ? cfg.color : textColor) : textMuted,
                   display: 'flex', alignItems: 'center', gap: 5,
-                  whiteSpace: 'nowrap',
+                  whiteSpace: 'nowrap', flex: '0 0 auto'
                 }}
               >
-                {IconComponent && <IconComponent size={12} />}
+                {IconComponent && <IconComponent size={12} style={{ flexShrink: 0 }} />}
                 {s === 'toutes' ? 'Toutes' : (cfg?.label || s)}
               </button>
             );
           })}
         </div>
-        <div className="cmd-search-wrap" style={{ position: 'relative', minWidth: 220, flex: '1 1 220px' }}>
-          <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: textMuted }} />
+        <div style={{ 
+          position: 'relative', 
+          width: '100%', 
+          maxWidth: '300px',
+          flexShrink: 0
+        }}>
+          <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: textMuted, zIndex: 2 }} />
           <input
             type="text"
             placeholder="N° ou client…"
@@ -181,9 +211,14 @@ export default function AdminCommandes() {
         </div>
       </div>
 
-      {/* Table - scroll horizontal sur mobile */}
-      <div style={{ background: cardBg, border: cardBorder, borderRadius: 14, overflow: 'hidden', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+      {/* Table - Version responsive */}
+      <div style={{ 
+        background: cardBg, border: cardBorder, borderRadius: 14, 
+        overflow: 'hidden', 
+        boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' 
+      }}>
+        {/* Vue desktop */}
+        <div className="desktop-table" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
           <div style={{ minWidth: 680 }}>
             {/* Table head */}
             <div style={{
@@ -194,7 +229,10 @@ export default function AdminCommandes() {
               background: thBg,
             }}>
               {['N°','Client','Date','Adresse','Total','Statut'].map(h => (
-                <span key={h} style={{ fontSize: 10, fontWeight: 700, color: textMuted, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{h}</span>
+                <span key={h} style={{ 
+                  fontSize: 10, fontWeight: 700, color: textMuted, 
+                  letterSpacing: '0.1em', textTransform: 'uppercase' 
+                }}>{h}</span>
               ))}
             </div>
 
@@ -212,6 +250,7 @@ export default function AdminCommandes() {
               filtered.map((c, i) => (
                 <div
                   key={c.id}
+                  className="table-row-desktop"
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '80px 1fr 140px 110px 100px 160px',
@@ -234,21 +273,31 @@ export default function AdminCommandes() {
                     }}>
                       {c.User?.nom?.[0]?.toUpperCase() || '?'}
                     </div>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: textColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <span style={{ 
+                      fontSize: 13, fontWeight: 600, color: textColor, 
+                      overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' 
+                    }}>
                       {c.User?.nom || 'Inconnu'}
                     </span>
                   </div>
 
                   <span style={{ fontSize: 11, color: textMuted }}>
-                    {new Date(c.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                    {new Date(c.createdAt).toLocaleString('fr-FR', { 
+                      day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' 
+                    })}
                   </span>
 
-                  <span style={{ fontSize: 11, color: textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  <span style={{ 
+                    fontSize: 11, color: textMuted, 
+                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' 
+                  }}>
                     {c.adresse || '—'}
                   </span>
 
                   <span style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>
-                    {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c.total || 0)}
+                    {new Intl.NumberFormat('fr-FR', { 
+                      style: 'currency', currency: 'EUR' 
+                    }).format(c.total || 0)}
                   </span>
 
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -274,13 +323,20 @@ export default function AdminCommandes() {
                         {STATUTS.map(s => {
                           const cfg = STATUT_CFG[s];
                           return (
-                            <option key={s} value={s} style={{ background: dark ? '#1a1a1a' : '#fff', color: textColor }}>
+                            <option key={s} value={s} style={{ 
+                              background: dark ? '#1a1a1a' : '#fff', 
+                              color: textColor 
+                            }}>
                               {cfg?.label || s}
                             </option>
                           );
                         })}
                       </select>
-                      <ChevronDown size={10} style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', color: textMuted, pointerEvents: 'none' }} />
+                      <ChevronDown size={10} style={{ 
+                        position: 'absolute', right: 6, top: '50%', 
+                        transform: 'translateY(-50%)', color: textMuted, 
+                        pointerEvents: 'none' 
+                      }} />
                     </div>
                   </div>
                 </div>
@@ -288,40 +344,142 @@ export default function AdminCommandes() {
             )}
           </div>
         </div>
+
+        {/* Vue mobile - Cards */}
+        <div className="mobile-table" style={{ display: 'none', padding: '12px' }}>
+          {loading ? (
+            <div style={{ padding: 40, textAlign: 'center', color: textMuted, fontSize: 13 }}>
+              Chargement…
+            </div>
+          ) : filtered.length === 0 ? (
+            <div style={{ padding: 48, textAlign: 'center' }}>
+              <ClipboardList size={48} style={{ color: textMuted, marginBottom: 12 }} />
+              <p style={{ color: textMuted, fontSize: 14 }}>Aucune commande trouvée</p>
+            </div>
+          ) : (
+            filtered.map(c => (
+              <div key={c.id} style={{
+                background: dark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.01)',
+                border: cardBorder,
+                borderRadius: 12,
+                padding: 16,
+                marginBottom: 12,
+              }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: '#f97316', marginBottom: 4 }}>
+                      #{c.id}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{
+                        width: 24, height: 24, borderRadius: 6, flexShrink: 0,
+                        background: 'linear-gradient(135deg,#f97316,#ef4444)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 10, fontWeight: 800, color: '#fff',
+                      }}>
+                        {c.User?.nom?.[0]?.toUpperCase() || '?'}
+                      </div>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: textColor }}>
+                        {c.User?.nom || 'Inconnu'}
+                      </span>
+                    </div>
+                  </div>
+                  <StatuBadge statut={c.statut} />
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px', marginBottom: 12 }}>
+                  <div>
+                    <div style={{ fontSize: 10, color: textMuted, marginBottom: 2 }}>Date</div>
+                    <div style={{ fontSize: 11, color: textColor }}>
+                      {new Date(c.createdAt).toLocaleString('fr-FR', { 
+                        day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' 
+                      })}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: 10, color: textMuted, marginBottom: 2 }}>Total</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>
+                      {new Intl.NumberFormat('fr-FR', { 
+                        style: 'currency', currency: 'EUR' 
+                      }).format(c.total || 0)}
+                    </div>
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <div style={{ fontSize: 10, color: textMuted, marginBottom: 2 }}>Adresse</div>
+                    <div style={{ fontSize: 11, color: textColor }}>
+                      {c.adresse || '—'}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ position: 'relative' }}>
+                  <select
+                    value={c.statut}
+                    onChange={e => updateStatut(c.id, e.target.value)}
+                    disabled={updating === c.id}
+                    style={{
+                      width: '100%',
+                      appearance: 'none',
+                      padding: '8px 32px 8px 12px',
+                      borderRadius: 8,
+                      background: inputBg,
+                      border: cardBorder,
+                      color: textColor,
+                      fontSize: 12,
+                      fontFamily: 'inherit',
+                      cursor: 'pointer',
+                      opacity: updating === c.id ? 0.5 : 1,
+                    }}
+                  >
+                    {STATUTS.map(s => {
+                      const cfg = STATUT_CFG[s];
+                      return (
+                        <option key={s} value={s} style={{ 
+                          background: dark ? '#1a1a1a' : '#fff', 
+                          color: textColor 
+                        }}>
+                          Modifier → {cfg?.label || s}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <ChevronDown size={14} style={{ 
+                    position: 'absolute', right: 10, top: '50%', 
+                    transform: 'translateY(-50%)', color: textMuted, 
+                    pointerEvents: 'none' 
+                  }} />
+                </div>
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       <style>{`
+        /* Styles responsive */
         @media (max-width: 768px) {
-          .cmd-stats {
-            grid-template-columns: repeat(2, 1fr) !important;
+          .desktop-table {
+            display: none !important;
+          }
+          .mobile-table {
+            display: block !important;
           }
         }
+
+        @media (min-width: 769px) {
+          .desktop-table {
+            display: block !important;
+          }
+          .mobile-table {
+            display: none !important;
+          }
+        }
+
         @media (max-width: 640px) {
-          .cmd-header {
-            flex-direction: column !important;
-            align-items: stretch !important;
-          }
-          .cmd-refresh-btn {
-            width: 100%;
-          }
-          .cmd-filters {
-            flex-direction: column !important;
-            align-items: stretch !important;
-          }
-          .cmd-filter-btns {
-            width: 100%;
-          }
-          .cmd-search-wrap {
-            width: 100% !important;
-            min-width: 0 !important;
-          }
-        }
-        @media (max-width: 480px) {
-          .cmd-header h1 {
-            font-size: 22px !important;
-          }
-          .cmd-stats {
-            gap: 8px !important;
+          .table-row-desktop {
+            grid-template-columns: 60px 1fr 100px 80px 70px 120px !important;
+            padding: 12px 16px !important;
+            gap: 4px !important;
           }
         }
       `}</style>
