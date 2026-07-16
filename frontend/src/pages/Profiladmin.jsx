@@ -33,7 +33,6 @@ export default function Profiladmin() {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  // Thème doux
   const bg = dark ? '#0a0a0a' : '#f0f0f3';
   const textColor = dark ? '#fff' : '#1a1a2e';
   const textMuted = dark ? 'rgba(255,255,255,0.35)' : 'rgba(26,26,46,0.45)';
@@ -124,13 +123,14 @@ export default function Profiladmin() {
   };
 
   return (
-    <div style={{
+    <div className="pf-page" style={{
       minHeight: '100vh',
       background: bg,
       fontFamily: "'Syne','Inter',sans-serif",
       color: textColor,
       padding: '80px 20px 60px',
       transition: 'background 0.3s, color 0.3s',
+      boxSizing: 'border-box',
     }}>
       <div style={{ maxWidth: 640, margin: '0 auto' }}>
         {/* Header */}
@@ -203,11 +203,12 @@ export default function Profiladmin() {
           padding: '24px',
           marginBottom: 16,
         }}>
-          <div style={{
+          <div className="pf-info-header" style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             marginBottom: 20,
+            gap: 12,
           }}>
             <h3 style={{
               fontSize: 11,
@@ -216,6 +217,7 @@ export default function Profiladmin() {
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
               margin: 0,
+              whiteSpace: 'nowrap',
             }}>
               Informations personnelles
             </h3>
@@ -236,12 +238,14 @@ export default function Profiladmin() {
                   display: 'flex',
                   alignItems: 'center',
                   gap: 8,
+                  flexShrink: 0,
+                  whiteSpace: 'nowrap',
                 }}
               >
                 <Edit2 size={14} /> Modifier
               </button>
             ) : (
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                 <button
                   onClick={handleSave}
                   disabled={loading}
@@ -260,6 +264,7 @@ export default function Profiladmin() {
                     alignItems: 'center',
                     gap: 8,
                     opacity: loading ? 0.5 : 1,
+                    whiteSpace: 'nowrap',
                   }}
                 >
                   <Save size={14} /> Sauvegarder
@@ -275,6 +280,7 @@ export default function Profiladmin() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    flexShrink: 0,
                   }}
                 >
                   <X size={14} style={{ color: textMuted }} />
@@ -309,10 +315,11 @@ export default function Profiladmin() {
                     fontSize: 14,
                     fontFamily: 'inherit',
                     outline: 'none',
+                    minWidth: 0,
                   }}
                 />
               ) : (
-                <span style={{ fontSize: 14, color: textColor }}>{user?.nom}</span>
+                <span style={{ fontSize: 14, color: textColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.nom}</span>
               )}
             </div>
 
@@ -341,10 +348,11 @@ export default function Profiladmin() {
                     fontSize: 14,
                     fontFamily: 'inherit',
                     outline: 'none',
+                    minWidth: 0,
                   }}
                 />
               ) : (
-                <span style={{ fontSize: 14, color: textColor }}>{user?.email}</span>
+                <span style={{ fontSize: 14, color: textColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user?.email}</span>
               )}
             </div>
 
@@ -374,6 +382,7 @@ export default function Profiladmin() {
                     fontSize: 14,
                     fontFamily: 'inherit',
                     outline: 'none',
+                    minWidth: 0,
                   }}
                 />
               ) : (
@@ -409,6 +418,7 @@ export default function Profiladmin() {
                     fontSize: 14,
                     fontFamily: 'inherit',
                     outline: 'none',
+                    minWidth: 0,
                   }}
                 />
               ) : (
@@ -451,14 +461,15 @@ export default function Profiladmin() {
             marginBottom: 10,
             cursor: 'pointer',
             transition: 'background 0.2s',
+            gap: 12,
           }}
           onMouseEnter={e => e.currentTarget.style.background = hoverBg}
           onMouseLeave={e => e.currentTarget.style.background = itemBg}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
               {dark ? 
-                <Moon size={16} style={{ color: textMuted }} /> : 
-                <Sun size={16} style={{ color: '#f59e0b' }} />
+                <Moon size={16} style={{ color: textMuted, flexShrink: 0 }} /> : 
+                <Sun size={16} style={{ color: '#f59e0b', flexShrink: 0 }} />
               }
               <span style={{ fontSize: 14, color: textColor }}>Mode sombre</span>
             </div>
@@ -473,6 +484,7 @@ export default function Profiladmin() {
                 cursor: 'pointer',
                 transition: 'all 0.3s ease',
                 background: toggleBg,
+                flexShrink: 0,
               }}
             >
               <span style={{
@@ -505,11 +517,12 @@ export default function Profiladmin() {
               transition: 'background 0.2s',
               textAlign: 'left',
               fontFamily: 'inherit',
+              boxSizing: 'border-box',
             }}
             onMouseEnter={e => e.currentTarget.style.background = hoverBg}
             onMouseLeave={e => e.currentTarget.style.background = itemBg}
           >
-            <Lock size={16} style={{ color: textMuted }} />
+            <Lock size={16} style={{ color: textMuted, flexShrink: 0 }} />
             <span style={{ fontSize: 14, color: textColor }}>Changer le mot de passe</span>
           </button>
         </div>
@@ -548,6 +561,7 @@ export default function Profiladmin() {
               transition: 'all 0.2s',
               textAlign: 'left',
               fontFamily: 'inherit',
+              boxSizing: 'border-box',
             }}
             onMouseEnter={e => {
               e.currentTarget.style.background = 'rgba(239,68,68,0.1)';
@@ -589,6 +603,7 @@ export default function Profiladmin() {
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
+            boxSizing: 'border-box',
           }}
           onMouseEnter={e => {
             e.currentTarget.style.background = hoverBg;
@@ -633,6 +648,7 @@ export default function Profiladmin() {
             maxWidth: 420,
             width: '100%',
             boxShadow: dark ? '0 20px 60px rgba(0,0,0,0.5)' : '0 20px 60px rgba(0,0,0,0.1)',
+            boxSizing: 'border-box',
           }}>
             <div style={{
               display: 'flex',
@@ -654,6 +670,7 @@ export default function Profiladmin() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  flexShrink: 0,
                 }}
               >
                 <X size={16} style={{ color: textMuted }} />
@@ -737,6 +754,7 @@ export default function Profiladmin() {
                 alignItems: 'center',
                 gap: 8,
                 opacity: loading ? 0.5 : 1,
+                boxSizing: 'border-box',
               }}
             >
               {loading ? 'Modification...' : 'Modifier le mot de passe'}
@@ -775,6 +793,7 @@ export default function Profiladmin() {
             width: '100%',
             textAlign: 'center',
             boxShadow: dark ? '0 20px 60px rgba(239,68,68,0.1)' : '0 20px 60px rgba(0,0,0,0.08)',
+            boxSizing: 'border-box',
           }}>
             <div style={{
               width: 64,
@@ -805,7 +824,7 @@ export default function Profiladmin() {
             }}>
               Cette action est irréversible. Toutes vos données seront définitivement supprimées.
             </p>
-            <div style={{ display: 'flex', gap: 12 }}>
+            <div className="pf-modal-actions" style={{ display: 'flex', gap: 12 }}>
               <button
                 onClick={() => setShowDeleteModal(false)}
                 style={{
@@ -858,6 +877,20 @@ export default function Profiladmin() {
           </div>
         </div>
       )}
+
+      <style>{`
+        @media (max-width: 480px) {
+          .pf-page {
+            padding: 24px 14px 40px !important;
+          }
+          .pf-info-header {
+            flex-wrap: wrap;
+          }
+          .pf-info-header h3 {
+            width: 100%;
+          }
+        }
+      `}</style>
     </div>
   );
 }

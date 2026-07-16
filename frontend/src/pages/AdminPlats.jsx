@@ -65,7 +65,6 @@ export default function AdminPlats() {
     } catch { toast.error('Erreur chargement'); }
   };
 
-  // Helper pour obtenir l'URL complète de l'image
   const getImageUrl = (imagePath) => {
     if (!imagePath || imagePath === 'default-food.jpg') return null;
     if (imagePath.startsWith('http')) return imagePath;
@@ -215,7 +214,6 @@ export default function AdminPlats() {
     return <Utensils size={16} color={color} />;
   };
 
-  // Vérifier si un plat a une image valide
   const hasValidImage = (plat) => {
     return plat.image && plat.image !== 'default-food.jpg' && plat.image !== '';
   };
@@ -224,15 +222,16 @@ export default function AdminPlats() {
     <div style={{ fontFamily: "'Syne','Inter',sans-serif", color: textColor }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+      <div className="ap-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0, letterSpacing: '-0.5px', color: textColor }}>Gestion des Plats</h1>
           <p style={{ color: textMuted, fontSize: 13, margin: '4px 0 0' }}>{plats.length} plats au total</p>
         </div>
         <button
           onClick={openAdd}
+          className="ap-add-btn"
           style={{
-            display: 'flex', alignItems: 'center', gap: 8,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             padding: '10px 20px', borderRadius: 11,
             background: 'linear-gradient(135deg,#f97316,#ef4444)',
             border: 'none', color: '#fff', fontSize: 13, fontWeight: 700,
@@ -263,8 +262,8 @@ export default function AdminPlats() {
       </div>
 
       {/* Toolbar */}
-      <div style={{ background: cardBg, border: cardBorder, borderRadius: 14, padding: '16px 20px', display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18, boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
-        <div style={{ flex: 1, position: 'relative' }}>
+      <div className="ap-toolbar" style={{ background: cardBg, border: cardBorder, borderRadius: 14, padding: '16px 20px', display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18, boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
+        <div className="ap-search-wrap" style={{ flex: 1, position: 'relative' }}>
           <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: textMuted }} />
           <input
             type="text" placeholder="Rechercher un plat…" value={search}
@@ -298,7 +297,7 @@ export default function AdminPlats() {
 
       {/* Grid view */}
       {view === 'grid' ? (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))', gap: 14 }}>
+        <div className="ap-plats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(230px,1fr))', gap: 14 }}>
           {filtered.map(plat => (
             <div
               key={plat.id}
@@ -390,6 +389,7 @@ export default function AdminPlats() {
           {filtered.map((plat, i) => (
             <div
               key={plat.id}
+              className="ap-list-row"
               style={{
                 display: 'grid', gridTemplateColumns: '48px 1fr 120px 80px 80px 100px 80px',
                 padding: '12px 20px', alignItems: 'center', gap: 12,
@@ -399,7 +399,7 @@ export default function AdminPlats() {
               onMouseEnter={e => e.currentTarget.style.background = listHoverBg}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
             >
-              <div style={{
+              <div className="ap-col-img" style={{
                 width: 40, height: 40, borderRadius: 9,
                 background: `${CAT_COLORS[plat.categorie] || '#f97316'}15`,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -416,19 +416,19 @@ export default function AdminPlats() {
                   getCatIconSmall(plat.categorie)
                 )}
               </div>
-              <div style={{ overflow: 'hidden' }}>
+              <div className="ap-col-name" style={{ overflow: 'hidden' }}>
                 <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: textColor, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{plat.nom}</p>
-                <p style={{ margin: '2px 0 0', fontSize: 11, color: textMuted, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{plat.description}</p>
+                <p className="ap-col-desc" style={{ margin: '2px 0 0', fontSize: 11, color: textMuted, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{plat.description}</p>
               </div>
-              <span style={{ fontSize: 11, color: textMuted, background: tagBg, borderRadius: 6, padding: '3px 9px', justifySelf: 'start', display: 'flex', alignItems: 'center', gap: 4 }}>
+              <span className="ap-col-cat" style={{ fontSize: 11, color: textMuted, background: tagBg, borderRadius: 6, padding: '3px 9px', justifySelf: 'start', display: 'flex', alignItems: 'center', gap: 4 }}>
                 {getCatIconSmall(plat.categorie)}
                 {plat.categorie}
               </span>
-              <span style={{ fontSize: 14, fontWeight: 800, color: '#f97316' }}>{Number(plat.prix).toFixed(2)}€</span>
-              <span style={{ fontSize: 12, fontWeight: 700, color: plat.promo > 0 ? '#ef4444' : textMuted }}>
+              <span className="ap-col-price" style={{ fontSize: 14, fontWeight: 800, color: '#f97316' }}>{Number(plat.prix).toFixed(2)}€</span>
+              <span className="ap-col-promo" style={{ fontSize: 12, fontWeight: 700, color: plat.promo > 0 ? '#ef4444' : textMuted }}>
                 {plat.promo > 0 ? `-${plat.promo}%` : '—'}
               </span>
-              <span style={{
+              <span className="ap-col-status" style={{
                 fontSize: 11, fontWeight: 700, padding: '3px 9px', borderRadius: 6,
                 background: plat.disponible !== false ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
                 color: plat.disponible !== false ? '#10b981' : '#ef4444',
@@ -436,7 +436,7 @@ export default function AdminPlats() {
               }}>
                 {plat.disponible !== false ? 'Dispo' : 'Indispo'}
               </span>
-              <div style={{ display: 'flex', gap: 6, justifySelf: 'end' }}>
+              <div className="ap-col-actions" style={{ display: 'flex', gap: 6, justifySelf: 'end' }}>
                 <button onClick={() => openEdit(plat)} style={{ width: 30, height: 30, borderRadius: 8, border: 'none', cursor: 'pointer', background: 'rgba(59,130,246,0.15)', color: '#60a5fa', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Pencil size={13} /></button>
                 <button onClick={() => del(plat.id)} style={{ width: 30, height: 30, borderRadius: 8, border: 'none', cursor: 'pointer', background: 'rgba(239,68,68,0.15)', color: '#f87171', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Trash2 size={13} /></button>
               </div>
@@ -461,7 +461,7 @@ export default function AdminPlats() {
         }}
           onClick={e => { if (e.target === e.currentTarget) setModal(false); }}
         >
-          <div style={{
+          <div className="ap-modal" style={{
             background: modalBg, border: modalBorder,
             borderRadius: 20, width: '100%', maxWidth: 550,
             maxHeight: '90vh', overflowY: 'auto',
@@ -470,7 +470,7 @@ export default function AdminPlats() {
           }}>
             <div style={{ height: 2, background: 'linear-gradient(90deg,#f97316,#ef4444,#8b5cf6)', borderRadius: '20px 20px 0 0' }} />
 
-            <div style={{ padding: '24px 28px' }}>
+            <div className="ap-modal-inner" style={{ padding: '24px 28px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
                 <div>
                   <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, letterSpacing: '-0.3px', color: textColor }}>
@@ -486,6 +486,7 @@ export default function AdminPlats() {
                     width: 32, height: 32, borderRadius: 9, border: 'none', cursor: 'pointer',
                     background: tagBg, color: textMuted,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0,
                   }}
                 ><X size={15} /></button>
               </div>
@@ -633,7 +634,7 @@ export default function AdminPlats() {
                 </div>
 
                 {/* Prix + Catégorie */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="ap-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                   <div>
                     <label style={S.fieldLabel}>Prix (€) *</label>
                     <input type="number" step="0.01" required value={form.prix} onChange={e => set('prix', e.target.value)} style={S.input} placeholder="0.00" />
@@ -686,7 +687,7 @@ export default function AdminPlats() {
                 </div>
 
                 {/* Submit */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, paddingTop: 4 }}>
+                <div className="ap-form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, paddingTop: 4 }}>
                   <button
                     type="submit"
                     disabled={uploading}
@@ -718,6 +719,68 @@ export default function AdminPlats() {
       <style>{`
         @keyframes spin {
           to { transform: rotate(360deg); }
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 640px) {
+          .ap-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 12px;
+          }
+          .ap-add-btn {
+            width: 100%;
+          }
+          .ap-toolbar {
+            flex-direction: column !important;
+            align-items: stretch !important;
+          }
+          .ap-search-wrap {
+            width: 100%;
+          }
+          .ap-plats-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .ap-modal-inner {
+            padding: 16px !important;
+          }
+          .ap-form-row {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .ap-list-row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            row-gap: 8px !important;
+          }
+          .ap-col-cat,
+          .ap-col-promo,
+          .ap-col-desc {
+            display: none !important;
+          }
+          .ap-col-img {
+            order: 0;
+            margin-right: 8px;
+          }
+          .ap-col-name {
+            order: 1;
+            flex: 1 1 auto;
+            min-width: 0;
+          }
+          .ap-col-price {
+            order: 2;
+            margin-left: 56px;
+          }
+          .ap-col-status {
+            order: 3;
+            margin-left: auto;
+          }
+          .ap-col-actions {
+            order: 4;
+            margin-left: auto;
+          }
         }
       `}</style>
     </div>

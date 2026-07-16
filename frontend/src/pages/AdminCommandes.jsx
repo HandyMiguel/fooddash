@@ -93,7 +93,7 @@ export default function AdminCommandes() {
     <div style={{ fontFamily: "'Syne','Inter',sans-serif", color: textColor }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+      <div className="cmd-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, gap: 12, flexWrap: 'wrap' }}>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 800, margin: 0, letterSpacing: '-0.5px', color: textColor }}>Commandes</h1>
           <p style={{ color: textMuted, fontSize: 13, margin: '4px 0 0' }}>
@@ -114,14 +114,14 @@ export default function AdminCommandes() {
       </div>
 
       {/* Stats */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
+      <div className="cmd-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 20 }}>
         {[
           { label: 'Total',       val: stats.total,     color: dark ? '#fff' : '#1a1a2e',    bg: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.03)', icon: ClipboardList, iconColor: dark ? '#fff' : '#1a1a2e' },
           { label: 'En attente',  val: stats.enAttente, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)',  icon: Clock, iconColor: '#f59e0b' },
           { label: 'En cours',    val: stats.enCours,   color: '#f97316', bg: 'rgba(249,115,22,0.1)',  icon: ChefHat, iconColor: '#f97316' },
           { label: 'Livrées',     val: stats.livrees,   color: '#10b981', bg: 'rgba(16,185,129,0.1)',  icon: CheckCircle, iconColor: '#10b981' },
         ].map(({ label, val, color, bg, icon: Icon, iconColor }) => (
-          <div key={label} style={{ background: bg, border: cardBorder, borderRadius: 14, padding: '16px 20px', textAlign: 'center', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
+          <div key={label} style={{ background: bg, border: cardBorder, borderRadius: 14, padding: '16px 20px', textAlign: 'center', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)', minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 6 }}>
               {Icon && <Icon size={14} color={iconColor} />}
               <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>{label}</p>
@@ -161,7 +161,7 @@ export default function AdminCommandes() {
             );
           })}
         </div>
-        <div style={{ position: 'relative', minWidth: 220 }}>
+        <div style={{ position: 'relative', minWidth: 220, flex: '1 1 220px' }}>
           <Search size={14} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: textMuted }} />
           <input
             type="text"
@@ -178,110 +178,127 @@ export default function AdminCommandes() {
         </div>
       </div>
 
-      {/* Table */}
-      <div style={{ background: cardBg, border: cardBorder, borderRadius: 14, padding: 0, overflow: 'hidden', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
-        {/* Table head */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '80px 1fr 140px 110px 100px 160px',
-          padding: '12px 20px',
-          borderBottom: thBorder,
-          background: thBg,
-        }}>
-          {['N°','Client','Date','Adresse','Total','Statut'].map(h => (
-            <span key={h} style={{ fontSize: 10, fontWeight: 700, color: textMuted, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{h}</span>
-          ))}
-        </div>
-
-        {/* Rows */}
-        {loading ? (
-          <div style={{ padding: 40, textAlign: 'center', color: textMuted, fontSize: 13 }}>
-            Chargement…
-          </div>
-        ) : filtered.length === 0 ? (
-          <div style={{ padding: 48, textAlign: 'center' }}>
-            <ClipboardList size={48} style={{ color: textMuted, marginBottom: 12 }} />
-            <p style={{ color: textMuted, fontSize: 14 }}>Aucune commande trouvée</p>
-          </div>
-        ) : (
-          filtered.map((c, i) => (
-            <div
-              key={c.id}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '80px 1fr 140px 110px 100px 160px',
-                padding: '14px 20px',
-                borderBottom: i < filtered.length - 1 ? rowBorder : 'none',
-                alignItems: 'center',
-                transition: 'background 0.15s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = rowHover}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-            >
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#f97316' }}>#{c.id}</span>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, overflow: 'hidden' }}>
-                <div style={{
-                  width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                  background: 'linear-gradient(135deg,#f97316,#ef4444)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 12, fontWeight: 800, color: '#fff',
-                }}>
-                  {c.User?.nom?.[0]?.toUpperCase() || '?'}
-                </div>
-                <span style={{ fontSize: 13, fontWeight: 600, color: textColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {c.User?.nom || 'Inconnu'}
-                </span>
-              </div>
-
-              <span style={{ fontSize: 11, color: textMuted }}>
-                {new Date(c.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
-              </span>
-
-              <span style={{ fontSize: 11, color: textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {c.adresse || '—'}
-              </span>
-
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>
-                {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c.total || 0)}
-              </span>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <StatuBadge statut={c.statut} />
-                <div style={{ position: 'relative' }}>
-                  <select
-                    value={c.statut}
-                    onChange={e => updateStatut(c.id, e.target.value)}
-                    disabled={updating === c.id}
-                    style={{
-                      appearance: 'none',
-                      padding: '4px 24px 4px 8px',
-                      borderRadius: 6,
-                      background: inputBg,
-                      border: cardBorder,
-                      color: textColor,
-                      fontSize: 11,
-                      fontFamily: 'inherit',
-                      cursor: 'pointer',
-                      opacity: updating === c.id ? 0.5 : 1,
-                    }}
-                  >
-                    {STATUTS.map(s => {
-                      const cfg = STATUT_CFG[s];
-                      return (
-                        <option key={s} value={s} style={{ background: dark ? '#1a1a1a' : '#fff', color: textColor }}>
-                          {cfg?.label || s}
-                        </option>
-                      );
-                    })}
-                  </select>
-                  <ChevronDown size={10} style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', color: textMuted, pointerEvents: 'none' }} />
-                </div>
-              </div>
+      {/* Table - scroll horizontal sur mobile */}
+      <div style={{ background: cardBg, border: cardBorder, borderRadius: 14, overflow: 'hidden', boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.03)' }}>
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}>
+          <div style={{ minWidth: 680 }}>
+            {/* Table head */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '80px 1fr 140px 110px 100px 160px',
+              padding: '12px 20px',
+              borderBottom: thBorder,
+              background: thBg,
+            }}>
+              {['N°','Client','Date','Adresse','Total','Statut'].map(h => (
+                <span key={h} style={{ fontSize: 10, fontWeight: 700, color: textMuted, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{h}</span>
+              ))}
             </div>
-          ))
-        )}
+
+            {/* Rows */}
+            {loading ? (
+              <div style={{ padding: 40, textAlign: 'center', color: textMuted, fontSize: 13 }}>
+                Chargement…
+              </div>
+            ) : filtered.length === 0 ? (
+              <div style={{ padding: 48, textAlign: 'center' }}>
+                <ClipboardList size={48} style={{ color: textMuted, marginBottom: 12 }} />
+                <p style={{ color: textMuted, fontSize: 14 }}>Aucune commande trouvée</p>
+              </div>
+            ) : (
+              filtered.map((c, i) => (
+                <div
+                  key={c.id}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '80px 1fr 140px 110px 100px 160px',
+                    padding: '14px 20px',
+                    borderBottom: i < filtered.length - 1 ? rowBorder : 'none',
+                    alignItems: 'center',
+                    transition: 'background 0.15s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = rowHover}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#f97316' }}>#{c.id}</span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 9, overflow: 'hidden' }}>
+                    <div style={{
+                      width: 30, height: 30, borderRadius: 8, flexShrink: 0,
+                      background: 'linear-gradient(135deg,#f97316,#ef4444)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 12, fontWeight: 800, color: '#fff',
+                    }}>
+                      {c.User?.nom?.[0]?.toUpperCase() || '?'}
+                    </div>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: textColor, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {c.User?.nom || 'Inconnu'}
+                    </span>
+                  </div>
+
+                  <span style={{ fontSize: 11, color: textMuted }}>
+                    {new Date(c.createdAt).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+
+                  <span style={{ fontSize: 11, color: textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {c.adresse || '—'}
+                  </span>
+
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#10b981' }}>
+                    {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(c.total || 0)}
+                  </span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <StatuBadge statut={c.statut} />
+                    <div style={{ position: 'relative' }}>
+                      <select
+                        value={c.statut}
+                        onChange={e => updateStatut(c.id, e.target.value)}
+                        disabled={updating === c.id}
+                        style={{
+                          appearance: 'none',
+                          padding: '4px 24px 4px 8px',
+                          borderRadius: 6,
+                          background: inputBg,
+                          border: cardBorder,
+                          color: textColor,
+                          fontSize: 11,
+                          fontFamily: 'inherit',
+                          cursor: 'pointer',
+                          opacity: updating === c.id ? 0.5 : 1,
+                        }}
+                      >
+                        {STATUTS.map(s => {
+                          const cfg = STATUT_CFG[s];
+                          return (
+                            <option key={s} value={s} style={{ background: dark ? '#1a1a1a' : '#fff', color: textColor }}>
+                              {cfg?.label || s}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <ChevronDown size={10} style={{ position: 'absolute', right: 6, top: '50%', transform: 'translateY(-50%)', color: textMuted, pointerEvents: 'none' }} />
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .cmd-stats {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+        @media (max-width: 480px) {
+          .cmd-header h1 {
+            font-size: 22px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -40,6 +40,7 @@ function StatCard({ icon: Icon, label, value, delta, positive, color, suffix = '
       display: 'flex', flexDirection: 'column', gap: 4,
       position: 'relative', overflow: 'hidden',
       boxShadow: dark ? 'none' : '0 2px 8px rgba(0,0,0,0.04)',
+      minWidth: 0,
     }}>
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: 2,
@@ -51,6 +52,7 @@ function StatCard({ icon: Icon, label, value, delta, positive, color, suffix = '
           width: 34, height: 34, borderRadius: 9,
           background: `${color}18`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
         }}>
           <Icon size={16} color={color} />
         </div>
@@ -91,12 +93,10 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  // Thème
   const textColor = dark ? '#fff' : '#1a1a2e';
   const textMuted = dark ? 'rgba(255,255,255,0.35)' : 'rgba(26,26,46,0.45)';
   const cardBg = dark ? 'rgba(255,255,255,0.03)' : '#ffffff';
   const cardBorder = dark ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(0,0,0,0.06)';
-  const chartBg = dark ? '#0d0d14' : '#ffffff';
 
   useEffect(() => { loadStats(); }, []);
 
@@ -121,7 +121,7 @@ export default function AdminDashboard() {
     <div style={{ fontFamily: "'Syne','Inter',sans-serif", color: textColor, maxWidth: 1280 }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+      <div className="dash-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, gap: 12, flexWrap: 'wrap' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
             <div style={{
@@ -158,7 +158,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Stat cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
+      <div className="dash-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 20 }}>
         <StatCard icon={ShoppingBag} label="Commandes" value={stats.commandes} delta={12.4} positive color="#3b82f6" dark={dark} />
         <StatCard icon={TrendingUp} label="Revenus" value={stats.revenus.toFixed(0)} delta={8.1} positive color="#f97316" suffix="€" dark={dark} />
         <StatCard icon={Utensils} label="Plats" value={stats.plats} color="#10b981" dark={dark} />
@@ -166,11 +166,11 @@ export default function AdminDashboard() {
       </div>
 
       {/* Charts row 1 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 14, marginBottom: 14 }}>
+      <div className="dash-charts-row1" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 14, marginBottom: 14 }}>
 
         {/* Area chart */}
-        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', minWidth: 0 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20, flexWrap: 'wrap', gap: 10 }}>
             <div>
               <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: 0 }}>Revenus 7 jours</p>
               <p style={{ fontSize: 22, fontWeight: 800, margin: '4px 0 0', letterSpacing: '-0.5px', color: textColor }}>
@@ -204,7 +204,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Donut chart */}
-        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', display: 'flex', flexDirection: 'column', minWidth: 0 }}>
           <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>Catégories</p>
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ResponsiveContainer width="100%" height={160}>
@@ -240,10 +240,10 @@ export default function AdminDashboard() {
       </div>
 
       {/* Bar chart + quick actions */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 14, marginBottom: 14 }}>
+      <div className="dash-charts-row2" style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 14, marginBottom: 14 }}>
 
         {/* Bar chart commandes */}
-        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px' }}>
+        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', minWidth: 0 }}>
           <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>Commandes par jour</p>
           <ResponsiveContainer width="100%" height={160}>
             <BarChart data={revenusData} margin={{ top: 5, right: 0, left: -20, bottom: 0 }} barSize={22}>
@@ -260,7 +260,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick actions */}
-        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div style={{ background: cardBg, border: cardBorder, borderRadius: 16, padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}>
           <p style={{ fontSize: 11, color: textMuted, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 6px' }}>Accès rapide</p>
           {[
             { to: '/admin/commandes', icon: '📋', label: 'Gérer les commandes', sub: `${stats.enAttente} en attente`, color: '#3b82f6' },
@@ -321,7 +321,25 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+      <style>{`
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+          .dash-stats {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .dash-charts-row1,
+          .dash-charts-row2 {
+            grid-template-columns: 1fr !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .dash-header h1 {
+            font-size: 24px !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }
