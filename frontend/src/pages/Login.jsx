@@ -67,7 +67,7 @@ export default function Login() {
       {/* ══════════════════════════════════
           LEFT PANEL – Branding Visual
       ══════════════════════════════════ */}
-      <div className="hidden lg:flex lg:w-1/2 xl:w-[58%] relative flex-col items-center justify-center overflow-hidden bg-[#0D0D15]">
+      <div className="hidden lg:flex lg:w-1/2 xl:w-[58%] relative flex-col items-center justify-center overflow-hidden bg-gray-100 dark:bg-[#0D0D15]">
         {/* Animated blobs */}
         <div className="absolute top-[-10%] left-[-10%] w-72 h-72 rounded-full opacity-25 animate-blob"
           style={{ background: 'radial-gradient(circle, #FF6B35, #FF3366)', animationDelay: '0s' }} />
@@ -90,12 +90,12 @@ export default function Login() {
             🍔
           </div>
 
-          <h1 className="text-5xl font-black text-white mb-4 leading-tight">
+          <h1 className="text-5xl font-black text-gray-900 dark:text-white mb-4 leading-tight">
             La meilleure<br />
             <span className="gradient-text-warm">nourriture</span><br />
             livrée vite
           </h1>
-          <p className="text-gray-400 text-base font-medium mb-10 leading-relaxed">
+          <p className="text-gray-500 dark:text-gray-400 text-base font-medium mb-10 leading-relaxed">
             Commandez vos plats préférés en quelques clics et recevez-les chauds à votre porte.
           </p>
 
@@ -107,8 +107,8 @@ export default function Login() {
               { value: '500+', label: 'Plats dispo' },
             ].map(stat => (
               <div key={stat.label} className="text-center">
-                <p className="text-xl font-black text-white">{stat.value}</p>
-                <p className="text-xs text-gray-500 mt-0.5 font-medium">{stat.label}</p>
+                <p className="text-xl font-black text-gray-900 dark:text-white">{stat.value}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500 mt-0.5 font-medium">{stat.label}</p>
               </div>
             ))}
           </div>
@@ -135,18 +135,18 @@ export default function Login() {
 
         {/* Review card floating */}
         <div className="absolute bottom-8 left-8 right-8 max-w-xs">
-          <div className="bg-white/5 backdrop-blur-md border border-white/8 rounded-2xl p-4 flex items-center gap-3">
+          <div className="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-gray-200 dark:border-white/8 rounded-2xl p-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#FF6B35] to-[#FF3366] flex items-center justify-center text-white font-black text-sm flex-shrink-0">
               M
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-white text-xs font-bold truncate">Marie L.</p>
+              <p className="text-gray-900 dark:text-white text-xs font-bold truncate">Marie L.</p>
               <div className="flex items-center gap-0.5 mt-0.5">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={10} className="text-[#F59E0B] fill-[#F59E0B]" />
                 ))}
               </div>
-              <p className="text-gray-400 text-[11px] mt-0.5 font-medium line-clamp-1">
+              <p className="text-gray-500 dark:text-gray-400 text-[11px] mt-0.5 font-medium line-clamp-1">
                 "Livraison ultra-rapide, les plats étaient encore chauds !"
               </p>
             </div>
